@@ -53,12 +53,11 @@ function postToDiscord(webhookUrl, content) {
   };
 
   const response = UrlFetchApp.fetch(webhookUrl, options);
-  console.log(response);
   return response.getContentText();
 }
 
 function fetchQuote(url = PropertiesService.getScriptProperties().getProperty("QUOTE_URL")) {
-  // このJSONの解析はzenquotesに依存しているため、URLだけ外部から渡しても意味が薄い。
+  // このJSONの解析はzenquotesのjsonの構造に依存しているため、URLだけ外部から渡しても意味が薄い。
   // したがってURLは内部で定義する。
 
   try {
