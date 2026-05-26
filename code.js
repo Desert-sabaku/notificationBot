@@ -1,6 +1,6 @@
-function fetchSchedule(calendarId) {
+function fetchSchedule(calendarId, date_offset = 1) {
   const calendar = CalendarApp.getCalendarById(calendarId);
-  const events = calendar.getEvents(...getNextDay());
+  const events = calendar.getEvents(...getDayRange(date_offset));
 
   if (events.length === 0) return;
 
@@ -21,15 +21,15 @@ function fetchSchedule(calendarId) {
   return schedules;
 }
 
-function getNextDay() {
+function getDayRange(offset) {
   const today = new Date();
 
   const nextDayStart = new Date(today);
-  nextDayStart.setDate(today.getDate() + 1);
+  nextDayStart.setDate(today.getDate() + offset);
   nextDayStart.setHours(0, 0, 0, 0);
 
   const nextDayEnd = new Date(today);
-  nextDayEnd.setDate(today.getDate() + 1);
+  nextDayEnd.setDate(today.getDate() + offset);
   nextDayEnd.setHours(23, 59, 59, 999);
 
   return [nextDayStart, nextDayEnd];
