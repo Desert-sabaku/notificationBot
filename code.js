@@ -2,14 +2,12 @@ function fetchSchedule(calendarId, date_offset = 1) {
   const calendar = CalendarApp.getCalendarById(calendarId);
   const events = calendar.getEvents(...getDayRange(date_offset));
 
-  if (events.length === 0) return;
+  const options = {
+    hour: "2-digit",
+    minute: "numeric",
+  };
 
   const schedules = events.map(event => {
-    const options = {
-      hour: "2-digit",
-      minute: "numeric",
-    };
- 
     const startTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getStartTime());
     const endTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getEndTime());
     const title = event.getTitle();
@@ -18,7 +16,7 @@ function fetchSchedule(calendarId, date_offset = 1) {
     return `【${startTime}~${endTime}】${title} - ${desc} @${location}`;
   });
 
-  return schedules;
+  return schedules; // 予定がなければ空配列が返る
 }
 
 function getDayRange(offset) {
