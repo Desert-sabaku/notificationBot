@@ -56,20 +56,27 @@ function postToDiscord(webhookUrl, content) {
   };
 
   const response = UrlFetchApp.fetch(webhookUrl, options);
+  console.log(response);
   return response.getContentText();
 }
 
-function fetchQuote() {
+function fetchQuote(url = PropertiesService.getScriptProperties().getProperty("QUOTE_URL")) {
   // このJSONの解析はzenquotesに依存しているため、URLだけ外部から渡しても意味が薄い。
   // したがってURLは内部で定義する。
-  const url = PropertiesService.getScriptProperties().getProperty("QUOTE_URL");
 
-  const response = UrlFetchApp.fetch(url);
-  const data = JSON.parse(response.getContentText())[0]; // 配列の形式になっているため。
-  const quote = LanguageApp.translate(data.q, "en", "ja");
-  const author = LanguageApp.translate(data.a, "en", "ja");
-  console.log(quote, author);
-  return [quote, author];
+  try {
+    const response = UrlFetchApp.fetch(url);
+    if (response.getResponseCode() !== 200) {
+      throw new Error(`Failed to fetch quote: ${response.getResponseCode()}`);
+    }
+    const data = JSON.parse(response.getContentText())[0]; // 配列の形式になっているため。
+    const quote = LanguageApp.translate(data.q, "en", "ja");
+    const author = LanguageApp.translate(data.a, "en", "ja");
+    return [quote, author];
+  } catch (e) {
+    console.error("Error fetching quote:", e);
+    return ["fetchの失敗ごとき些末なことよ", "真田悠希"];
+  }
 }
 
 function main() {
@@ -77,5 +84,5 @@ function main() {
   const webhookUrl = PropertiesService.getScriptProperties().getProperty("WEBHOOK_URL");
   const schedule = fetchSchedule(calendarId);
   const quote = fetchQuote();
-  postToDiscord(webhookUrl, buildContent(schedule, quote));
+  console.log(postToDiscord(webhookUrl, buildContent(schedule, quote)));
 }
