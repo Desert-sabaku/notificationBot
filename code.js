@@ -22,15 +22,14 @@ function fetchSchedule(calendarId, date_offset = 1) {
 function getDayRange(offset) {
   const today = new Date();
 
-  const nextDayStart = new Date(today);
-  nextDayStart.setDate(today.getDate() + offset);
-  nextDayStart.setHours(0, 0, 0, 0);
+  const start = new Date(today);
+  start.setDate(today.getDate() + offset);
+  start.setHours(0, 0, 0, 0);
 
-  const nextDayEnd = new Date(today);
-  nextDayEnd.setDate(today.getDate() + offset);
-  nextDayEnd.setHours(23, 59, 59, 999);
+  const end = new Date(start);
+  end.setHours(23, 59, 59, 999);
 
-  return [nextDayStart, nextDayEnd];
+  return [start, end];
 }
 
 function buildContent(schedules, quote, date_offset = 1) {
