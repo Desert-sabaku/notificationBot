@@ -6,7 +6,7 @@ function fetchSchedule(calendarId, date_offset = 1) {
 
   const schedules = events.map(event => {
     const options = {
-      hour: "numeric",
+      hour: "2-digit",
       minute: "numeric",
     };
  
@@ -35,9 +35,10 @@ function getDayRange(offset) {
   return [nextDayStart, nextDayEnd];
 }
 
-function buildContent(schedules, quote) {
-  const quote_content = quote.join("―");
-  const head_content = "明日の予定だ";
+function buildContent(schedules, quote, date_offset = 1) {
+  const quote_content = `> ${quote.join("―")}`;
+  const nextDay = getDayRange(date_offset)[0];
+  const head_content = `${nextDay.getMonth()}月${nextDay.getDate()}日の予定`;
   const schedule_content = schedules.join("\n");
   return [quote_content, head_content, schedule_content].join("\n");
 }
