@@ -32,12 +32,12 @@ function getDayRange(offset) {
   return [start, end];
 }
 
-function buildContent(schedules, quote, date_offset = 1) {
-  const quote_content = `> ${quote.join("―")}`;
+function buildContent(schedules, quote = null, date_offset = 1) {
+  const quote_content = quote ? `> ${quote.join("―")}` : null; // quoteをいつでも消せるように…泣きたい
   const nextDay = getDayRange(date_offset)[0];
-  const head_content = `${nextDay.getMonth()}月${nextDay.getDate()}日の予定`;
-  const schedule_content = schedules.join("\n");
-  return [quote_content, head_content, schedule_content].join("\n");
+  const head_content = `${nextDay.getMonth() + 1}月${nextDay.getDate()}日の予定`;
+  const schedule_content = schedules.length !== 0 ? schedules.join("\n") : "予定はありません";
+  return [quote_content, head_content, schedule_content].filter((e) => e).join("\n");
 }
 
 function postToDiscord(webhookUrl, content) {
