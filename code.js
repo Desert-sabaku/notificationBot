@@ -76,10 +76,17 @@ function fetchQuote(url = PropertiesService.getScriptProperties().getProperty("Q
   }
 }
 
-function main() {
+function main(offset = 1) {
   const calendarId = PropertiesService.getScriptProperties().getProperty("CALENDAR_ID");
-  const webhookUrl = PropertiesService.getScriptProperties().getProperty("WEBHOOK_URL");
-  const schedule = fetchSchedule(calendarId);
-  const quote = fetchQuote();
-  console.log(postToDiscord(webhookUrl, buildContent(schedule, quote)));
+  const webhookUrls = [
+    // PropertiesService.getScriptProperties().getProperty("WEBHOOK_URL"),
+    PropertiesService.getScriptProperties().getProperty("TEST_WEBHOOK_URL"),
+  ];
+
+  webhookUrls.forEach((url) => {
+    const schedule = fetchSchedule(calendarId, offset);
+    const quote = fetchQuote();
+    const content = buildContent(schedule, quote, offset)
+    console.log(postToDiscord(url, content));
+  })
 }
