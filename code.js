@@ -1,27 +1,46 @@
 function fetchSchedule(calendarId, date_offset = 1) {
-  const calendar = CalendarApp.getCalendarById(calendarId);
-  const events = calendar.getEvents(...getDayRange(date_offset));
+  const maxRetries = 3; // 最大リトライ回数
+  const delayMills = 2000; // リトライ時の待機時間（2秒）
 
-  const options = {
-    hour: "2-digit",
-    minute: "numeric",
-  };
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const calendar = CalendarApp.getCalendarById(calendarId);
+      const events = calendar.getEvents(...getDayRange(date_offset));
 
-  const schedules = events.map(event => {
-    const startTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getStartTime());
-    const endTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getEndTime());
-    const title = event.getTitle();
-    const desc = event.getDescription() || null;
-    const location = event.getLocation() || null;
-    return `【${startTime}~${endTime}】${title} - ${desc} @${location}`;
-  });
+      const options = {
+        hour: "2-digit",
+        minute: "numeric",
+        timeZone: "Asia/Tokyo"
+      };
 
-  return schedules; // 予定がなければ空配列が返る
+      const schedules = events.map(event => {
+        const startTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getStartTime());
+        const endTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getEndTime());
+        const title = event.getTitle();
+        const desc = event.getDescription() || null;
+        const location = event.getLocation() || null;
+        return `【${startTime}~${endTime}】${title} - ${desc} @${location}`;
+      });
+
+      console.log([`${schedules.length}件のスケジュールを取得しました。`, schedules].join("\n"));
+      return schedules; 
+    } catch (e) {
+      console.warn(`[試行 ${attempt}/${maxRetries}] スケジュール取得に失敗しました: ${e.toString()}`);
+ 
+      if (attempt < maxRetries) {
+        Utilities.sleep(delayMills);
+      } else {
+        // すべてのリトライが失敗した場合のみ、エラーログを出して空配列を返す
+        console.error(`すべてのリトライ（${maxRetries}回）に失敗しました。処理をスキップします。`);
+        return [];
+      }
+    }
+  }
 }
 
 function getDayRange(offset) {
   const today = new Date();
-
+  
   const start = new Date(today);
   start.setDate(today.getDate() + offset);
   start.setHours(0, 0, 0, 0);
