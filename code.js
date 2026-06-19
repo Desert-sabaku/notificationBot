@@ -16,10 +16,12 @@ function fetchSchedule(calendarId, date_offset = 1) {
       const schedules = events.map(event => {
         const startTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getStartTime());
         const endTime = new Intl.DateTimeFormat("ja-JP", options).format(event.getEndTime());
+        const time = !(startTime === "00:00" && endTime === "00:00") ? `${startTime}~${endTime}` : "終日";
+        console.log([startTime, endTime].join("\n"));
         const title = event.getTitle();
         const desc = event.getDescription() || null;
         const location = event.getLocation() || null;
-        return `【${startTime}~${endTime}】${title} - ${desc} @${location}`;
+        return `【${time}】${title} - ${desc} @${location}`;
       });
 
       console.log([`${schedules.length}件のスケジュールを取得しました。`, schedules].join("\n"));
