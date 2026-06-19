@@ -96,10 +96,10 @@ function fetchQuote(url = PropertiesService.getScriptProperties().getProperty("Q
   }
 }
 
-function main(offset = 1) {
+function main(_, offset = 1) {
   const calendarId = PropertiesService.getScriptProperties().getProperty("CALENDAR_ID");
   const webhookUrls = [
-    // PropertiesService.getScriptProperties().getProperty("WEBHOOK_URL"),
+    PropertiesService.getScriptProperties().getProperty("WEBHOOK_URL"),
     PropertiesService.getScriptProperties().getProperty("TEST_WEBHOOK_URL"),
   ];
 
