@@ -23,6 +23,7 @@ export default class CalendarService {
                     console.error(
                         `[CalendarService] すべてのリトライに失敗しました。`,
                     );
+                    throw e;
                 }
             }
         }
@@ -62,7 +63,7 @@ export default class CalendarService {
             const title = event.getTitle();
             const desc = event.getDescription() || null;
             const location = event.getLocation() || null;
-            return `【${time}】${title} - ${desc} @${location}`;
+            return `【${time}】${title}${desc ? ` - ${desc}` : ""}${location ? ` @${location}` : ""}`;
         });
     }
 }

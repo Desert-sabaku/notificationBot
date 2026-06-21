@@ -9,8 +9,5 @@
     "scripts": {
         "build": "bun run build.ts",
         "deploy": "bun run build && clasp push"
-    },
-    "overrides": {
-        "esbuild": "0.28.1"
     }
 }

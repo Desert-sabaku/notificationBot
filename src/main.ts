@@ -13,6 +13,9 @@ export function main(_: unknown, offset = 1) {
         scriptProps.getProperty("WEBHOOK_URL"),
         scriptProps.getProperty("TEST_WEBHOOK_URL"),
     ].filter((url): url is string => !!url);
+    if (webhookUrls.length === 0) {
+        throw new Error("No webhook URLs configured in script properties.");
+    }
 
     const calendarService = new CalendarService(calendarId);
     const quoteService = new QuoteService();

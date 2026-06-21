@@ -10,6 +10,10 @@ export default class DiscordNotifier {
             muteHttpExceptions: true,
         };
         const response = UrlFetchApp.fetch(this.webhookUrl, options);
+        const statusCode = response.getResponseCode();
+        if (statusCode < 200 || statusCode >= 300) {
+            throw new Error(`Status: ${statusCode}`);
+        }
         return response.getContentText();
     }
 }
