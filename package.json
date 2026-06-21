@@ -3,7 +3,7 @@
         "@types/google-apps-script": "^2.0.9",
         "@types/node": "^26.0.0",
         "esbuild": "^0.28.1",
-        "esbuild-gas-plugin": "^0.10.0",
+        "esbuild-plugin-gas-generator": "^2.0.2",
         "typescript": "^6.0.3"
     },
     "scripts": {
