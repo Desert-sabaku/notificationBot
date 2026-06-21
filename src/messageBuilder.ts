@@ -1,6 +1,6 @@
-class MessageBuilder {
-    static build(schedules, quote = null, offset = 1) {
-        const quoteContent = quote ? `> ${quote.join("―")}` : null;
+export default class MessageBuilder {
+    static build(schedules: string[], quote: string[] | null = null, offset = 1) {
+        const quoteContent = quote && "> " + quote.join("―");
 
         const today = new Date();
         const targetDay = new Date(today);

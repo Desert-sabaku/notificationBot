@@ -1,0 +1,19 @@
+export default class DiscordNotifier {
+    constructor(private webhookUrl: string) {}
+
+    public post(content: string) {
+        const payload = { content: content };
+        const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
+            method: "post",
+            contentType: "application/json",
+            payload: JSON.stringify(payload),
+            muteHttpExceptions: true,
+        };
+        const response = UrlFetchApp.fetch(this.webhookUrl, options);
+        const statusCode = response.getResponseCode();
+        if (statusCode < 200 || statusCode >= 300) {
+            throw new Error(`Status: ${statusCode}`);
+        }
+        return response.getContentText();
+    }
+}

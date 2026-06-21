@@ -1,10 +1,21 @@
-function main(_, offset = 1) {
+import CalendarService from "./calendarService"
+import QuoteService from "./quoteService"
+import MessageBuilder from "./messageBuilder"
+import DiscordNotifier from "./discordNotifier"
+
+export function main(_: unknown, offset = 1) {
     const scriptProps = PropertiesService.getScriptProperties();
     const calendarId = scriptProps.getProperty("CALENDAR_ID");
+    if (calendarId === null) {
+        throw new Error("CALENDAR_ID is not set in script properties.");
+    }
     const webhookUrls = [
         scriptProps.getProperty("WEBHOOK_URL"),
         scriptProps.getProperty("TEST_WEBHOOK_URL"),
-    ].filter(url => url); // 空のプロパティを除外
+    ].filter((url): url is string => !!url);
+    if (webhookUrls.length === 0) {
+        throw new Error("No webhook URLs configured in script properties.");
+    }
 
     const calendarService = new CalendarService(calendarId);
     const quoteService = new QuoteService();
