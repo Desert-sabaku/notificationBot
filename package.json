@@ -1,6 +1,16 @@
 {
-  "dependencies": {},
-  "devDependencies": {
-    "@types/google-apps-script": "^2.0.9"
-  }
+    "devDependencies": {
+        "@types/google-apps-script": "^2.0.9",
+        "@types/node": "^26.0.0",
+        "esbuild": "^0.28.1",
+        "esbuild-gas-plugin": "^0.10.0",
+        "typescript": "^6.0.3"
+    },
+    "scripts": {
+        "build": "bun run build.ts",
+        "deploy": "bun run build && clasp push"
+    },
+    "overrides": {
+        "esbuild": "0.28.1"
+    }
 }

@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "ES2019",
+        "useDefineForClassFields": false,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": [
+            "google-apps-script",
+            "node"
+        ]
+    },
+    "include": [
+        "src/**/*",
+        "build.ts"
+    ]
+}
