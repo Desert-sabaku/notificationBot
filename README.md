@@ -1,7 +1,16 @@
+# これは何
+
+Google Calendarの指定されたカレンダーから予定を取得し，Discord Webhookに投げるスクリプト．
+
+* 取得する日の指定可能．
+* カレンダーの指定可能．
+* 宛先の指定可能．
+
 # 必要物
 
 * [`bun`](https://bun.sh/)
 * [`clasp`](https://github.com/google/clasp)
+* GASについてのある程度の知識
 
 # 使い方
 
