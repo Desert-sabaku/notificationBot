@@ -1,7 +1,7 @@
 # 必要物
 
-* [`bun`]([url](https://bun.sh/)) 
-* [`clasp`]([url](https://github.com/google/clasp.git))
+* [`bun`](https://bun.sh/)
+* [`clasp`](https://github.com/google/clasp)
 
 # 使い方
 
