@@ -1,6 +1,6 @@
 import CalendarService from "./calendarService"
 import QuoteService from "./quoteService"
-import MessageBuilder from "./messageBuilder"
+import { build as buildMsg } from "./messageBuilder"
 import DiscordNotifier from "./discordNotifier"
 
 export function main(_: unknown, offset = 1) {
@@ -23,7 +23,7 @@ export function main(_: unknown, offset = 1) {
     const schedules = calendarService.fetchSchedule(offset);
     const quote = quoteService.fetchQuote();
 
-    const content = MessageBuilder.build(schedules, quote, offset);
+    const content = buildMsg(schedules, quote, offset);
 
     webhookUrls.forEach(url => {
         const notifier = new DiscordNotifier(url);
