@@ -3,7 +3,7 @@ import QuoteService from "./quoteService"
 import { build as buildMsg } from "./messageBuilder"
 import DiscordNotifier from "./discordNotifier"
 
-export function main(_: unknown, offset = 1) {
+export function main(_: unknown, daysAhead = 1) {
     const scriptProps = PropertiesService.getScriptProperties();
     const calendarId = scriptProps.getProperty("CALENDAR_ID");
     if (calendarId === null) {
@@ -20,10 +20,10 @@ export function main(_: unknown, offset = 1) {
     const calendarService = new CalendarService(calendarId);
     const quoteService = new QuoteService();
 
-    const schedules = calendarService.fetchSchedule(offset);
+    const schedules = calendarService.fetchSchedule(daysAhead);
     const quote = quoteService.fetchQuote();
 
-    const content = buildMsg(schedules, quote, offset);
+    const content = buildMsg(schedules, quote, daysAhead);
 
     webhookUrls.forEach(url => {
         const notifier = new DiscordNotifier(url);
