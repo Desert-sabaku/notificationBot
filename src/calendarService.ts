@@ -5,8 +5,8 @@ export default class CalendarService {
         private delayMills: number = 2000,
     ) { }
 
-    public fetchSchedule(offset = 1): string[] {
-        const [start, end] = this.getDayRange(offset);
+    public fetchSchedule(daysAhead = 1): string[] {
+        const [start, end] = this.getDayRange(daysAhead);
 
         for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
             try {
@@ -30,10 +30,10 @@ export default class CalendarService {
         return [];
     }
 
-    private getDayRange(offset: number) {
+    private getDayRange(daysAhead: number) {
         const today = new Date();
         const start = new Date(today);
-        start.setDate(today.getDate() + offset);
+        start.setDate(today.getDate() + daysAhead);
         start.setHours(0, 0, 0, 0);
 
         const end = new Date(start);
