@@ -9,4 +9,7 @@ esbuild.build({
     outfile: "dist/main.js",
     target: "es2021",
     plugins: [GasPlugin({ appsscript: "appsscript.json" })],
-}).catch(() => process.exit(1));
+}).catch((e) => {
+    console.error(e);
+    process.exitCode = 1;
+});
